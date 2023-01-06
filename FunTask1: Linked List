@@ -1,0 +1,137 @@
+#include<iostream>
+using namespace std;
+
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int data){
+        this->data=data;
+        this->next=NULL;
+    }
+};
+void print(Node* &head)
+{
+    Node* temp= head;
+    while(temp != NULL)
+    {
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+    cout<<endl;
+}
+
+//Q1
+void insertAtFirst( Node* &head, int d)
+{
+    Node* temp= new Node(d);
+    temp->next= head;
+    head= temp;
+}
+
+//Q2
+void insertAtPosition(Node* &head, Node* &tail, int position, int d)
+{
+    Node* temp= head;
+    if(position==1){
+        insertAtFirst(head, d);
+        return;
+    }
+    int count=1;
+    while(count<position-1){
+        temp=temp->next;
+        count++;
+    }
+    if(temp->next==NULL){
+        Node* temp = new Node(d);
+        tail->next=temp;
+        tail=tail->next;
+        return;
+    }
+    Node* insertAtPosition= new Node(d);
+    insertAtPosition->next=temp->next;
+    temp->next = insertAtPosition;
+}
+
+//Q3
+void removeTail(Node*head)
+{
+    if(head==NULL){
+        return;
+    }
+    else if(head->next==NULL){
+        delete head;
+        return;
+    }
+    else{
+        Node* secondlast= head;
+        while(secondlast->next->next!=NULL){
+            secondlast=secondlast->next;
+        }
+        delete secondlast->next;
+        secondlast->next=NULL;
+    }
+}
+
+//Q4
+void reverseLL(Node* &head)
+{
+    Node* curr=head;
+    Node* prev=NULL;
+    while(curr!=NULL){
+        Node* next=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=next;
+    }
+    head=prev;
+}
+
+//Q5
+void kfromLast(Node* &head,int k)
+{
+    Node* s=head;
+    Node* f=head;
+    for(int i=0;i<k;i++)
+    {
+        f=f->next;
+    }
+    while(f!=NULL){
+        f=f->next;
+        s=s->next;
+    }
+    cout<<"The k^th element from last is "<<s->data<<endl;
+}
+
+//Q6
+void mid(Node* head)
+{
+    Node* s=head;
+    Node* f=head;
+    while(f->next!=NULL && f->next->next!=NULL){
+        f=f->next->next;
+        s=s->next;
+    }
+    cout<<"Middle element is "<<s->data<<endl;
+}
+int main()
+{
+    Node* node1= new Node(10);
+    cout<<node1->data<<endl;
+    cout<<node1->next<<endl;
+    Node* head = node1;
+    Node* tail = node1;
+    insertAtFirst(head, 15);
+    print(head);
+    insertAtPosition(head,tail,3,5);
+    print(head);
+    insertAtPosition(head,tail,2,25);
+    print(head);
+    removeTail(head);
+    print(head);
+    reverseLL(head);
+    print(head);
+    kfromLast(head,2);
+    mid(head);
+    return 0;
+}
